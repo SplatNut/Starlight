@@ -1,13 +1,5 @@
 #include "main.hpp"
-
-// rtld working object
 __attribute__((section(".bss"))) rtld::ModuleObject __nx_module_runtime;
-
-// Needed on old versions of rtld that doesn't check for DT_INIT existance.
-extern "C" void __custom_init(void) {}
-
-// DT_FINI here for completeness.
-extern "C" void __custom_fini(void) {}
 
 static __int64 lastInputs = 0x200;
 static agl::DrawContext *mDrawContext;
@@ -276,6 +268,11 @@ char const* modeToText(Modes mode){
 }
 
 
-int main( int argc, const char* argv[] ){
-    
+int main(int argc, char **argv) 
+{
+    // this is to ensure that this isn't being ran by the HBL
+    if (svcGetSystemTick() > 0) 
+    {
+        return 0;
+    }
 }
